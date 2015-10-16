@@ -1,34 +1,38 @@
-// 7 segment display driver for JY-MCU module based on TM1650 chip
-// Copyright (c) 2015 Anatoli Arkhipenko
-//
-// Changelog:
-//     2015-02-24 - Initial release 
-//	   2015-04-27 - Added support of program memery (PROGMEM) to store the ASCII to Segment Code table 
-//	   2015-08-08 - Added check if panel is connected during init. All calls will be disabled is panel was not connected during init.
-
-/* ============================================
-7 segment display driver for JY-MCU module based on TM1650 chip
-Copyright (c) 2015 Anatoli Arkhipenko
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-===============================================
-*/
+/** ============================================
+ * 7 segment display driver for JY-MCU module based on TM1650 chip
+ * Copyright (c) 2015 Anatoli Arkhipenko
+ * 
+ * 
+ * Changelog:
+ *	v1.0.0:
+ *		2015-02-24 - Initial release 
+ *
+ *	v1.0.1:  
+ *		2015-04-27 - Added support of program memery (PROGMEM) to store the ASCII to Segment Code table
+ *
+ *	v1.0.2
+ *		2015-08-08 - Added check if panel is connected during init. All calls will be disabled is panel was not connected during init.
+ *
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * ===============================================*/
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -91,7 +95,7 @@ class TM1650 {
 	void	displayOn();
 	void	displayOff();
 	void	displayState(bool aState);
-	void 	displayString(char *aString);
+	void displayString(char *aString);
 	int 	displayRunning(char *aString);
 	int 	displayRunningShift();
 	void	setBrightness(int aValue);
@@ -103,7 +107,7 @@ class TM1650 {
 	int		getNumPositions() { return iNumDigits; };
 
     private:
-	char	*iPosition;
+	char *iPosition;
 	bool	iActive;
 	int	iNumDigits;
         char	iString[TM1650_MAX_STRING+1];
