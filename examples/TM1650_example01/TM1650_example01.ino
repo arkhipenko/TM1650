@@ -8,28 +8,38 @@ void setup()
   Wire.begin(); //Join the bus as master
 
   Serial.begin(38400); //Start serial communication at 9600 for debug statements
-  Serial.println("OpenSegment Example Code");
+  Serial.println("TM1650 Example Code");
 
   d.init();
-  
-  delay(1000);
-  
+   
 }
 
 void loop() 
 {
+  d.displayOff();
+  d.displayString("____");
+  d.setBrightness(TM1650_MIN_BRIGHT);
   d.displayOn();
+  delay(100);
   char line[] = "1234";
+
   d.displayString(line);
+  d.setBrightnessGradually(TM1650_MAX_BRIGHT);
   delay(2000);
+  d.setBrightnessGradually(TM1650_MIN_BRIGHT);
+  d.displayOff();
+  delay(1000);
+  
   line[1] |= 128;
+  d.displayOn();
+  d.setBrightnessGradually(TM1650_MAX_BRIGHT);
   d.displayString(line);
   delay(2000);
   
-  for (int i=0; i<8; i++) {
-    d.setBrightness(i);
-    delay(500);
-  }
+//  for (int i=0; i<8; i++) {
+//    d.setBrightness(i);
+//    delay(500);
+//  }
   
   d.displayString("abcd");
   delay(2000);
@@ -69,6 +79,7 @@ void loop()
 
   
 }
+
 
 
 

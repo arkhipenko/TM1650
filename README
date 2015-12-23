@@ -10,3 +10,6 @@ Changelog:
 
 	v1.0.2
 		2015-08-08 - Added check if panel is connected during init. All calls will be disabled is panel was not connected during init.
+
+	v1.1.0:
+		2015-12-20 - Code clean up. Moved to a single header file. Added Gradual brightness method
