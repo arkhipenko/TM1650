@@ -13,3 +13,6 @@ Changelog:
 
 	v1.1.0:
 		2015-12-20 - Code clean up. Moved to a single header file. Added Gradual brightness method
+    v1.1.1:
+ 		2018-1-10 - Merged keycode reading and displayInt, by @marlumme.
+ 		https://github.com/arkhipenko/TM1650/issues/1
