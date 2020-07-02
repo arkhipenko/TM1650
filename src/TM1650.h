@@ -28,7 +28,11 @@
 //#define TM1650_USE_PROGMEM
 
 #ifdef TM1650_USE_PROGMEM
-#include <avr/pgmspace.h>
+    #if (defined(__AVR__))
+      #include <avr\pgmspace.h>
+    #else
+      #include <pgmspace.h>
+    #endif
 #endif
 
 #define TM1650_DISPLAY_BASE 0x34 // Address of the left-most digit 
