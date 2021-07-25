@@ -92,7 +92,7 @@ class TM1650 {
 	int 	displayRunning(char *aString);
 	int 	displayRunningShift();
 	void	setBrightness(unsigned int aValue = TM1650_MAX_BRIGHT);
-	void	setBrightnessGradually(unsigned int aValue = TM1650_MAX_BRIGHT);
+	void	setBrightnessGradually(unsigned int aValue = TM1650_MAX_BRIGHT, unsigned char fadeDelay = 50);
 	inline unsigned int getBrightness() { return iBrightness; };
 
 	void	controlPosition(unsigned int aPos, byte aValue);
@@ -155,7 +155,7 @@ void TM1650::setBrightness(unsigned int aValue) {
 /** Set brightness of all digits equally
  * aValue - brightness value with 1 being the lowest, and 7 being the brightest
  */
-void TM1650::setBrightnessGradually(unsigned int aValue) {
+void TM1650::setBrightnessGradually(unsigned int aValue, unsigned char fadeDelay) {
 	if (!iActive || aValue == iBrightness) return;
 
 	if (aValue > TM1650_MAX_BRIGHT) aValue = TM1650_MAX_BRIGHT;
@@ -163,7 +163,7 @@ void TM1650::setBrightnessGradually(unsigned int aValue) {
 	unsigned int i = iBrightness;
 	do {
 		setBrightness(i);
-		delay(250);
+		delay(fadeDelay);
 		i += step;
 	} while (i!=aValue);
 }
