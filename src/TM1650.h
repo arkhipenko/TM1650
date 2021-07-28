@@ -16,6 +16,24 @@
  *  v1.1.0:
  *      2015-12-20 - code clean up. Moved to a single header file. Added Gradual brightness method
  *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  * ===============================================*/
 
 #include <Arduino.h>
@@ -25,7 +43,7 @@
 #ifndef _TM1650_H_
 #define _TM1650_H_
 
-//#define TM1650_USE_PROGMEM
+#define TM1650_USE_PROGMEM
 
 #ifdef TM1650_USE_PROGMEM
     #if (defined(__AVR__))
@@ -46,7 +64,7 @@
 #define TM1650_MSK_DOT		0b11110111
 #define TM1650_BRIGHT_SHIFT	4
 #define TM1650_MSK_BRIGHT	0b10001111
-#define TM1650_MIN_BRIGHT	0
+#define TM1650_MIN_BRIGHT	1
 #define TM1650_MAX_BRIGHT	7
 
 #ifndef TM1650_USE_PROGMEM
@@ -78,7 +96,7 @@ class TM1650 {
 	int 	displayRunning(char *aString);
 	int 	displayRunningShift();
 	void	setBrightness(unsigned int aValue = TM1650_MAX_BRIGHT);
-	void	setBrightnessGradually(unsigned int aValue = TM1650_MAX_BRIGHT);
+	void	setBrightnessGradually(unsigned int aValue = TM1650_MAX_BRIGHT, unsigned char fadeDelay = 50);
 	inline unsigned int getBrightness() { return iBrightness; };
 
 	void	controlPosition(unsigned int aPos, byte aValue);
@@ -141,7 +159,7 @@ void TM1650::setBrightness(unsigned int aValue) {
 /** Set brightness of all digits equally
  * aValue - brightness value with 1 being the lowest, and 7 being the brightest
  */
-void TM1650::setBrightnessGradually(unsigned int aValue) {
+void TM1650::setBrightnessGradually(unsigned int aValue, unsigned char fadeDelay) {
 	if (!iActive || aValue == iBrightness) return;
 
 	if (aValue > TM1650_MAX_BRIGHT) aValue = TM1650_MAX_BRIGHT;
@@ -149,7 +167,7 @@ void TM1650::setBrightnessGradually(unsigned int aValue) {
 	unsigned int i = iBrightness;
 	do {
 		setBrightness(i);
-		delay(50);
+		delay(fadeDelay);
 		i += step;
 	} while (i!=aValue);
 }
