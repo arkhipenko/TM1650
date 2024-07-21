@@ -28,6 +28,7 @@ setPosition	KEYWORD2
 setDot	KEYWORD2
 getPosition	KEYWORD2
 getNumPositions	KEYWORD2
+displayChar KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

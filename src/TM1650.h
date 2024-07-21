@@ -27,6 +27,8 @@
 
 //#define TM1650_USE_PROGMEM
 
+#define REPLACE_NON_EXISTING_CHARACTERS
+
 #ifdef TM1650_USE_PROGMEM
     #if (defined(__AVR__))
       #include <avr\pgmspace.h>
@@ -48,6 +50,22 @@
 #define TM1650_MSK_BRIGHT	0b10001111
 #define TM1650_MIN_BRIGHT	0
 #define TM1650_MAX_BRIGHT	7
+
+#define SEG_A   0b00000001
+#define SEG_B   0b00000010
+#define SEG_C   0b00000100
+#define SEG_D   0b00001000
+#define SEG_E   0b00010000
+#define SEG_F   0b00100000
+#define SEG_G   0b01000000
+#define SEG_DP  0b10000000
+//      A
+//     ---
+//  F |   | B
+//     -G-
+//  E |   | C
+//     ---
+//      D	. DP
 
 #ifndef TM1650_USE_PROGMEM
 const byte TM1650_CDigits[128] {
@@ -80,6 +98,7 @@ class TM1650 {
 	void	setBrightness(unsigned int aValue = TM1650_MAX_BRIGHT);
 	void	setBrightnessGradually(unsigned int aValue = TM1650_MAX_BRIGHT);
 	inline unsigned int getBrightness() { return iBrightness; };
+	void 	displayChar(char aString, int pos);
 
 	void	controlPosition(unsigned int aPos, byte aValue);
 	void	setPosition(unsigned int aPos, byte aValue);
@@ -264,6 +283,16 @@ void TM1650::displayString(char *aString)
 #else
 	  iBuffer[i] = pgm_read_byte_near(TM1650_CDigits + a);
 #endif
+#ifdef REPLACE_NON_EXISTING_CHARACTERS
+	  if(a=='m'||a=='M'){
+		setPosition(i,SEG_E|SEG_F|SEG_A|SEG_B|SEG_C);
+	  } else if(a=='k'||a=='K'){
+		setPosition(i,SEG_E|SEG_F|SEG_G);
+	  } else if(a=='i') {
+		setPosition(i,SEG_C);
+	  } 
+	  else
+#endif
 	  if (a) {
 	    Wire.beginTransmission(TM1650_DISPLAY_BASE+i);
 	    Wire.write(iBuffer[i] | dot);
@@ -272,6 +301,34 @@ void TM1650::displayString(char *aString)
 	  else
 	    break;
 	    
+	}
+}
+
+/** Display a single character on the display 
+ * aString = character array to be displayed
+ * i = digit position
+ *
+ * Internal buffer is updated as well
+ * Only first N positions of the string are displayed if
+ *  the string is longer than the number of digits
+ 	@new
+ */
+void TM1650::displayChar(char aString, int i)
+{
+	if (!iActive) return;
+	if(i<iNumDigits){
+	  byte a = ((byte) aString) & 0b01111111;
+	  byte dot = ((byte) aString) & 0b10000000;
+#ifndef TM1650_USE_PROGMEM	  
+	  iBuffer[i] = TM1650_CDigits[a];
+#else
+	  iBuffer[i] = pgm_read_byte_near(TM1650_CDigits + a);
+#endif
+	  if (a) {
+	    Wire.beginTransmission(TM1650_DISPLAY_BASE+i);
+	    Wire.write(iBuffer[i] | dot);
+	    Wire.endTransmission();
+	  }
 	}
 }
 

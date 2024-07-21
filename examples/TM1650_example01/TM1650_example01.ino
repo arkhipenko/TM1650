@@ -77,7 +77,35 @@ void loop()
     }
   }
 
-  
+  d.displayString("   A");
+  d.setPosition(0, SEG_A);
+  delay(1000);
+  d.displayString("   B");
+  d.setPosition(0, SEG_B);
+  delay(1000);
+  d.displayString("   C");
+  d.setPosition(0, SEG_C);
+  delay(1000);
+  d.displayString("   D");
+  d.setPosition(0, SEG_D);
+  delay(1000);
+  d.displayString("   E");
+  d.setPosition(0, SEG_E);
+  delay(1000);
+  d.displayString("   F");
+  d.setPosition(0, SEG_F);
+  delay(1000);
+  d.displayString("   G");
+  d.setPosition(0, SEG_G);
+  delay(1000);
+  d.displayString("  DP");
+  d.setPosition(0, SEG_DP);
+  delay(1000);
+
+  if (d.displayRunning("AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz")) {
+    while (d.displayRunningShift()) delay(500);
+  }
+  delay(2000);
 }
 
 
